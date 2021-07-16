@@ -38,11 +38,14 @@ def getCompany(text):
 mod_text = user_input.upper()
 ticker_data = yfinance.Ticker(mod_text)
 
-if ticker_data is not None:
+
+if ticker_data.ticker is not None:
     pass
 elif ticker_data is None and yfinance.Ticker(getCompany(mod_text)) is not None:
+    print('here')
     ticker_data = yfinance.Ticker(getCompany(mod_text))
 elif ticker_data is None and yfinance.Ticker(getCompany(mod_text)) is None:
+    print('here')
     streamlit.warning('Please Input a Valid Ticker or Stock Name')
 
 
