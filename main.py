@@ -15,9 +15,16 @@ projections of stocks using LTSM
 
 ''')
 
+
 streamlit.write('---')
 
-user_input = streamlit.text_input('Please Enter the Stock Ticker', ' ')
+# Search Bar
+prev_query = ""
+user_input = streamlit.text_input('Please Enter Company Name', ' ')
+
+# Side bar preferences
+start_date = streamlit.sidebar.date_input("Start date", datetime.date(2019, 1, 1))
+end_date = streamlit.sidebar.date_input("End date", datetime.date(2021, 1, 31))
 
 
 def get_symbol(symbol):
@@ -25,27 +32,25 @@ def get_symbol(symbol):
     result = requests.get(url).json()
 
     for x in result['ResultSet']['Result']:
-        if x['symbol'] == symbol:
+        if x['symbol'] is symbol.upper():
             return x['name']
 
 
-def getCompany(text):
+def get_Company(text):
     r = requests.get('https://api.iextrading.com/1.0/ref-data/symbols')
     stock_list = r.json()
     return process.extract(text, stock_list)
 
 
-mod_text = user_input.upper()
-ticker_data = yfinance.Ticker(mod_text)
+def isBlank(myString):
+    if myString and myString.strip():
+        return False
+    return True
 
 
-if ticker_data.ticker is not None:
-    pass
-elif ticker_data is None and yfinance.Ticker(getCompany(mod_text)) is not None:
-    print('here')
-    ticker_data = yfinance.Ticker(getCompany(mod_text))
-elif ticker_data is None and yfinance.Ticker(getCompany(mod_text)) is None:
-    print('here')
-    streamlit.warning('Please Input a Valid Ticker or Stock Name')
+if streamlit.button('Search'):
+    prev_query = user_input
+    ticker_data = yfinance.Ticker(get_Company(user_input.upper()))
+    print(ticker_data.info)
 
 
