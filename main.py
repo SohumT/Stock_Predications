@@ -1,7 +1,5 @@
 import streamlit
 import yfinance
-import requests
-from fuzzywuzzy import process
 import pandas
 import cufflinks
 import datetime
@@ -10,7 +8,7 @@ from web_scrape import *
 
 streamlit.markdown('''
 
-#Stock Price Web App
+# Stock Price Web App
 
 An interactive application that evaluates the safety of stock investments and shows 
 projections of stocks using LTSM
@@ -36,8 +34,37 @@ def isBlank(myString):
 
 
 if streamlit.button('Search'):
+
+    # Ticker Information
     prev_query = user_input
-    ticker_data = yfinance.Ticker(user_input)
-    print(ticker_data.info)
+    ticker_data = yfinance.Ticker(user_input.upper())
+    ticker_history = ticker_data.history(period = '1d', start=start_date, end=end_date)
+
+    string_logo = '<img src=%s>' % ticker_data.info['logo_url']
+    streamlit.markdown(string_logo, unsafe_allow_html=True)
+
+    string_name = ticker_data.info['longName']
+    streamlit.header('**%s**' % string_name)
+
+    string_summary = ticker_data.info['longBusinessSummary']
+    streamlit.info(string_summary)
+
+    # Ticker Data
+    streamlit.header('**Ticker data**')
+    streamlit.write(ticker_data)
+
+    # Bollinger bands
+    streamlit.header('**Bollinger Bans**')
+    qf = cufflinks.QuantFig(ticker_data)
+    qf.add_bollinger_bands()
+    fig = qf.iplot(asFigure=True)
+    streamlit.plotly_chart(fig)
+
+
+
+
+
+
+
 
 
