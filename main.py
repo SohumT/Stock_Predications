@@ -32,6 +32,21 @@ def isBlank(myString):
     return True
 
 
+def compare_strings(str1, str2):
+    count1 = 0
+    count2 = 0
+
+    for i in range(len(str1)):
+        if "0" <= str1[i] <= "9":
+            count1 += 1
+
+    for i in range(len(str2)):
+        if "0" <= str2[i] <= "9":
+            count2 += 1
+
+    return count1 == count2
+
+
 def display_Graph(history):
     # Bollinger bands
     streamlit.header('**Bollinger Bands**')
@@ -63,13 +78,14 @@ if streamlit.button('Search'):
     # Ticker Information
     prev_query = user_input
     ticker_data = yfinance.Ticker(user_input.upper())
-    ticker_history = ticker_data.history(period='1d', start=start_date, end=end_date)
 
-    if ticker_data.ticker == '':
+    if compare_strings(ticker_data.ticker, ""):
         streamlit.warning('Stock Ticker or Symbol Not Found. Please Enter the Stock Ticker Again')
     else:
         # Display Stock Components: Logo, Description and Real-Time Stock Price
         display_Stock_Info(ticker_data)
 
         # Display Graph
+        ticker_history = ticker_data.history(period='1d', start=start_date, end=end_date)
         display_Graph(ticker_history)
+
