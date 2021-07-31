@@ -22,8 +22,11 @@ prev_query = ""
 user_input = streamlit.text_input('Please Enter Company Name', '')
 
 # Side bar preferences
+# Add country code preferences for stock price
 start_date = streamlit.sidebar.date_input("Start date", datetime.date(2019, 1, 1))
 end_date = streamlit.sidebar.date_input("End date", datetime.date(2021, 1, 31))
+
+tickers = []
 
 
 def isBlank(myString):
@@ -57,7 +60,6 @@ def display_Graph(history):
 
 
 def display_Stock_Info(ticker):
-
     string_name = ticker.info['longName']
     streamlit.header('**%s**' % string_name)
 
@@ -78,6 +80,7 @@ if streamlit.button('Search'):
     # Ticker Information
     prev_query = user_input
     ticker_data = yfinance.Ticker(user_input.upper())
+    tickers.append(ticker_data)
 
     if compare_strings(ticker_data.ticker, ""):
         streamlit.warning('Stock Ticker or Symbol Not Found. Please Enter the Stock Ticker Again')
@@ -88,4 +91,3 @@ if streamlit.button('Search'):
         # Display Graph
         ticker_history = ticker_data.history(period='1d', start=start_date, end=end_date)
         display_Graph(ticker_history)
-
