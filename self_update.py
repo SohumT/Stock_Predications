@@ -11,6 +11,7 @@ def get_Price(tickers, country):
     base_url = 'http://google.com/finance/quote/'
 
     for x in tickers:
+        #problem different urls for different markets
         url = base_url + tickers[x] + ":NSE?hl=en&gl=" + country
 
         page = url.get(url)
@@ -21,7 +22,10 @@ def get_Price(tickers, country):
 
         result = result = results.__str__()
 
-        # Splitting the price from currency symbol
+        res = result.split(get_currency(country))[1].split("<")[0]
+
+
+        # Splitting the price from currency symbol & changing string as necessary
 
 
 def get_currency(code):
