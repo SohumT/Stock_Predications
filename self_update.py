@@ -10,11 +10,11 @@ from bs4 import BeautifulSoup
 def get_Price(tickers_arr):
     base_url = 'http://google.com/finance/quote/'
 
-    for x in tickers_arr:
+    for x in range(len(tickers_arr)):
         # problem different urls for different markets
         url = base_url + tickers_arr[x] + ":" + get_Market(tickers_arr[x])
 
-        page = url.get(url)
+        page = requests.get(url)
 
         soup = BeautifulSoup(page.content, 'html.parser')
 
@@ -34,10 +34,11 @@ def get_Market(ticker):
 
     url = base_url + ticker
 
-    page = url.get(url)
+    page = requests.get(url)
 
     soup = BeautifulSoup(page.content, 'html.parser')
 
+    # Some problem with the class in the html file- check html file again
     text = soup.find(class_="EFkvDd")
 
     result = text.__str__()

@@ -74,7 +74,7 @@ def display_Stock_Info(ticker):
 
     # Ticker Data
     streamlit.header('**Current Stock Price**')
-    print(ticker.info)
+
     streamlit.markdown(get_Price(tickers))
     # stock price data
 
@@ -84,11 +84,13 @@ if streamlit.button('Search'):
     # Ticker Information
     prev_query = user_input
     ticker_data = yfinance.Ticker(user_input.upper())
-    tickers.append(ticker_data)
 
-    if ticker_data.ticker is '':
+    if str(ticker_data.ticker) == '':
         streamlit.warning('Stock Ticker or Symbol Not Found. Please Enter the Stock Ticker Again')
     else:
+        # Clear 'Tickers' and Append ticker name to Tickers
+        tickers = [user_input.upper()]
+
         # Display Stock Components: Logo, Description and Real-Time Stock Price
         display_Stock_Info(ticker_data)
 
