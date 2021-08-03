@@ -4,6 +4,8 @@ import pandas
 import cufflinks
 import datetime
 
+from self_update import *
+
 from web_scrape import *
 
 streamlit.markdown('''
@@ -72,6 +74,8 @@ def display_Stock_Info(ticker):
 
     # Ticker Data
     streamlit.header('**Current Stock Price**')
+    print(ticker.info)
+    #streamlit.markdown(get_Price(tickers, ticker.info['market']))
     # stock price data
 
 
@@ -82,7 +86,7 @@ if streamlit.button('Search'):
     ticker_data = yfinance.Ticker(user_input.upper())
     tickers.append(ticker_data)
 
-    if compare_strings(ticker_data.ticker, ""):
+    if ticker_data.ticker is '':
         streamlit.warning('Stock Ticker or Symbol Not Found. Please Enter the Stock Ticker Again')
     else:
         # Display Stock Components: Logo, Description and Real-Time Stock Price
