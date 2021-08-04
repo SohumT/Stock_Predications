@@ -85,7 +85,7 @@ if streamlit.button('Search'):
     prev_query = user_input
     ticker_data = yfinance.Ticker(user_input.upper())
 
-    if str(ticker_data.ticker) == '':
+    if ticker_data.info['logo_url'] == '':
         streamlit.warning('Stock Ticker or Symbol Not Found. Please Enter the Stock Ticker Again')
     else:
         # Clear 'Tickers' and Append ticker name to Tickers
