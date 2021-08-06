@@ -75,7 +75,9 @@ def display_Stock_Info(ticker):
     # Ticker Data
     streamlit.header('**Current Stock Price**')
     # put for loop here
-    streamlit.markdown(get_Price("AAPL"))
+    for i in range(len(tickers)):
+        streamlit.subheader(tickers[i] + ": " + get_Price(tickers[i]))
+        streamlit.markdown('''\n''')
     # stock price data
 
 
