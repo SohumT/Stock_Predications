@@ -21,7 +21,7 @@ def get_Price(ticker):
 
     result = text.__str__()
 
-    res = result.split("<")[0]
+    res = result.split("<")
 
     print(res)
 
